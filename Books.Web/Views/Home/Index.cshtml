@@ -1,0 +1,57 @@
+﻿@model Books.Web.Models.HomeIndexViewModel
+
+@{
+    Dictionary<string, string> routeValues = new Dictionary<string, string>()
+{
+        {"from",Model.FilterFrom.ToString() },
+        {"to",Model.FilterTo.ToString() }
+    };
+}
+
+<h1>Verlagsübersicht</h1>
+<p>Verlag mit den meisten Büchern: @Model.PublisherWithMostBook?.Name</p>
+<h3>Anzahl Bücher filtern:</h3>
+<form asp-action="Index">
+    <label asp-for="FilterFrom" class="font-weight-bold">Von</label>
+    <input asp-for="FilterFrom" value="@null"/>
+    <span asp-validation-for="FilterFrom"></span>
+    <label asp-for="FilterTo" class="font-weight-bold">Bis</label>
+    <input asp-for="FilterTo" value="@null"/>
+    <span asp-validation-for="FilterTo"></span>
+    <input type="submit" value="Filtern" class="btn-outline" asp-all-route-data="routeValues" />
+</form>
+<table class="table">
+    <thead>
+        <tr>
+            @foreach (var publisher in Model.Publishers)
+            {
+                <th>
+                    @nameof(publisher.Name)
+                </th>
+                <th>
+                    @nameof(publisher.Books)
+                </th>
+                <th>
+
+                </th>
+                break;
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var publisher in Model.Publishers)
+        {
+            <tr>
+                <td>
+                    @publisher.Name
+                </td>
+                <td>
+                    @publisher.Books.Count()
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-publisherId="@publisher.Id">Bücher anzeigen</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

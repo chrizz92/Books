@@ -1,0 +1,61 @@
+﻿@model Books.Web.Models.HomeDetailsViewModel
+
+
+
+<h1>Bücher</h1>
+
+<p>
+    <a asp-controller="Book" asp-action="Create" asp-route-publisherId="@Model.SelectedId">Buch anlegen</a>
+</p>
+<form asp-action="Details" class="mb-2">
+    <label asp-for="SelectedId"></label>
+    <select asp-for="SelectedId" asp-items="Model.publisherNames"></select>
+    <input type="submit" value="Verlag wechseln" class="btn btn-info" />
+</form>
+<table class="table">
+    <thead>
+        <tr>
+            @foreach (var book in Model.Books)
+            {
+                <th>
+                    @nameof(book.Title)
+                </th>
+                <th>
+                    @nameof(book.Authors)
+                </th>
+                <th>
+                    @nameof(book.Isbn)
+                </th>
+                <th>
+                    @nameof(book.Publisher)
+                </th>
+                <th>
+
+                </th>
+                break;
+            }
+
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var book in Model.Books) {
+        <tr>
+            <td>
+                @book.Title
+            </td>
+            <td>
+                @book.Authors
+            </td>
+            <td>
+                @book.Isbn
+            </td>
+            <td>
+                @Model.publisherNames.Where(p=>Convert.ToInt32(p.Value)==book.Publisher_Id).First().Text
+            </td>
+            <td>
+                <a asp-controller="Book" asp-action="Delete" asp-route-bookId="@book.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
